@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+        <!--<script src="qrious.js"></script>-->
+
+        <style>
+            body {
+    color: #000;
+    overflow-x: hidden;
+    height: 100%;
+    background-color: #EF5350;
+    background-image: url(https://cdn.hipwallpaper.com/i/82/58/2kmts7.jpg);
+    background-size: cover;
+    background-repeat: no-repeat
+}
+ 
+.card {
+    padding: 30px 25px 5px 50px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px 2px #7c7777;
+    margin: auto;
+    vertical-align: middle;
+}
+ 
+.border-line {
+    border-right: 1px solid #BDBDBD
+}
+ 
+.text-sm {
+    font-size: 13px
+}
+ 
+.text-md {
+    font-size: 18px
+}
+ 
+.image {
+    width: 35px;
+}
+ 
+::placeholder {
+    color: grey;
+    opacity: 1
+}
+ 
+:-ms-input-placeholder {
+    color: grey
+}
+ 
+::-ms-input-placeholder {
+    color: grey
+}
+ 
+input {
+    padding: 2px 0px;
+    border: none;
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 5px;
+    margin-top: 2px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 500
+}
+ 
+#qr-code {
+    border: 1px solid gray;
+    border-radius:5px;
+    padding: 6px;
+    display: block;
+    margin:0 auto;
+}
+ 
+input:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #EF5350;
+    outline-width: 0
+}
+ 
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0
+}
+ 
+.btn-red {
+    background-color: #EF5350;
+    color: #fff;
+    padding: 8px 25px;
+    border-radius: 50px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    border: 2px solid #fff
+}
+ 
+.btn-red:hover {
+    box-shadow: 0 0 0 2px #EF5350
+}
+ 
+.btn-red:focus {
+    box-shadow: 0 0 0 2px #EF5350 !important
+}
+ 
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+    background-color: #EF5350
+}
+ 
+@media screen and (max-width: 575px) {
+    .border-line {
+        border-right: none;
+        border-bottom: 1px solid #EEEEEE
+    }
+}
+        </style>
+        
+    </head>
+    <body>
+        <div class="container-fluid px-1 px-md-2 px-lg-4 py-5 mx-auto">
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-7 col-lg-8 col-md-9 col-sm-11 mx-5">
+                    <div class="card border-0">
+                        <div class="row justify-content-center">
+                            <h3 class="mb-4"><img class="image" src="https://cdn.iconscout.com/icon/free/png-512/bhim-3-69845.png"> UPI QR Code Generator</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 border-line pb-3">
+                                <div class="form-group">
+                                    <p class="text-muted text-sm mb-0">Payee Name</p> <input id="name" type="text" placeholder="Name" onkeyup="this.value = this.value.toUpperCase();">
+                                </div>
+                                <div class="form-group">
+                                    <p class="text-muted text-sm mb-0">UPI ID / VPA</p>
+                                    <div class="row px-3"> <input id="upi" type="text" placeholder="8879373209@ybl">
+                                        <p class="mb-0"></p> <img class="image ml-1" src="https://cdn.iconscout.com/icon/free/png-512/bhim-3-69845.png">
+                                    </div>
+                                </div>
+                                
+                                <submit onclick="generateQRCode()" class="btn btn-red text-center">Generate QR Code</submit>
+                            </div>
+                            <div class="col-sm-5 text-center justify-content-center pt-4 pb-4">
+                                
+                                <h5 class="" id="upi_name">QR CODE</h5>
+                                
+                                <div class="row justify-content-sm-center">
+                                    <canvas id="qr-code"></canvas><br>  
+                                </div>
+                                <small class="text-sm text-muted" id="upi_id">8879373209@ybl</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+        <script>
+             var qr;
+             (function() {
+                     qr = new QRious({
+                     element: document.getElementById('qr-code'),
+                     size: 150,
+                     
+                     //value: 'upi://pay?pa=vwfs20101001234@citibank&amp;pn=Mahesh Rajpurohit&amp;tr=Thank You'
+                 });
+             })();
+              
+                function generateQRCode() {
+                //alert ("hello");
+                 var name = document.getElementById("name").value;
+                 var upi = document.getElementById("upi").value;
+                 //var amount = document.getElementById("amount").value;
+                 //var message = document.getElementById("message").value;
+                 document.getElementById('upi_id').innerHTML=upi;
+                 document.getElementById('upi_name').innerHTML=name;
+                 //document.getElementById('upi_amount').innerHTML=amount;
+                 var qrtext = "upi://pay?pa=" + upi + "&amp;pn="+name+"&amp;";
+                      
+                 qr.set({
+                     foreground: 'blue',
+                     size: 200,
+                     value: qrtext
+                 });
+             }
+         </script>
+         
+    </body>
+</html>
+
